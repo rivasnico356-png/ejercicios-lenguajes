@@ -168,6 +168,7 @@ def componer(*funciones):
     Retorna una nueva función que aplica las funciones recibidas
     en cadena, de derecha a izquierda.
 
+
     Ejemplo:
     componer(f, g)(x) == f(g(x))
     """
@@ -177,6 +178,12 @@ def componer(*funciones):
 
     def aplicar(f, g):
         return lambda x: f(g(x))
+
+    return reduce(
+        aplicar,
+        funciones,
+        identidad
+    )
 
  
 
@@ -217,6 +224,18 @@ if __name__ == "__main__":
 
     print(next(gen))
     print(next(gen))
+
+    # -----------------------------------------------------------------------
+    # Punto 7 - BONUS
+    pipeline = componer(
+        sorted,
+        extraer_nombres,
+        lambda d: filtrar_por_estado(d, "bueno")
+    )
+
+    print("\nNombres de humedales en buen estado, ordenados:")
+    print(pipeline(dataset))
+  
 
 
   
